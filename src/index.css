@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --kafe-black: #000000;
+    --kafe-white: #FFFFFF;
+    --kafe-dark: #121212;
+  }
+}
+
 /* Ramen Yard Custom Styles */
 /* Minimal helpers for ramen palette when needed outside tailwind tokens */
 .bg-ramen-cream { background-color: #FFF3E0; }

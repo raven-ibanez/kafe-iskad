@@ -14,11 +14,30 @@ export default {
           sesame: '#D1C7B7',
           seaweed: '#1F2937',
           kimchi: '#B81D24'
+        },
+        kafe: {
+          black: '#000000',
+          white: '#FFFFFF',
+          dark: '#121212',
+          gray: {
+            50: '#F9F9F9',
+            100: '#F3F3F3',
+            200: '#E6E6E6',
+            300: '#D4D4D4',
+            400: '#A3A3A3',
+            500: '#737373',
+            600: '#525252',
+            700: '#404040',
+            800: '#262626',
+            900: '#171717',
+          }
         }
       },
       fontFamily: {
         'pretendard': ['Pretendard', 'system-ui', 'sans-serif'],
-        'noto-kr': ['Noto Serif KR', 'serif']
+        'noto-kr': ['Noto Serif KR', 'serif'],
+        'inter': ['Inter', 'system-ui', 'sans-serif'],
+        'playfair': ['Playfair Display', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
