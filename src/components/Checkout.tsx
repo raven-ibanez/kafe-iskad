@@ -82,12 +82,12 @@ ${cartItems.map(item => {
             : addOn.name
         ).join(', ')}`;
       }
-      itemDetails += ` x${item.quantity} - ₱${item.totalPrice * item.quantity}`;
+      itemDetails += ` x${item.quantity} - ₱${(item.totalPrice * item.quantity).toFixed(2)}`;
       return itemDetails;
     }).join('\n')}
 
-💰 TOTAL: ₱${totalPrice}
-${serviceType === 'delivery' ? `🛵 DELIVERY FEE:` : ''}
+💰 TOTAL: ₱${totalPrice.toFixed(2)}
+${serviceType === 'delivery' ? `🛵 DELIVERY FEE: (TO BE CALCULATED)` : ''}
 
 💳 Payment: ${selectedPaymentMethod?.name || paymentMethod}
 📸 Payment Screenshot: Please attach your payment receipt screenshot
@@ -97,11 +97,22 @@ ${notes ? `📝 Notes: ${notes}` : ''}
 Please confirm this order to proceed. Thank you for choosing Kafe Sikad! 🥟
     `.trim();
 
-    const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/1924770491097054?text=${encodedMessage}`;
+    // Copy to clipboard
+    try {
+      navigator.clipboard.writeText(orderDetails).then(() => {
+        alert("✨ ORDER DETAILS COPIED!\n\nWe've copied your order summary to your clipboard. Please paste it when Messenger opens and send it to our page to finalize your order. Thank you!");
 
-    window.open(messengerUrl, '_blank');
-
+        const encodedMessage = encodeURIComponent(orderDetails);
+        const messengerUrl = `https://m.me/1924770491097054?text=${encodedMessage}`;
+        window.open(messengerUrl, '_blank');
+      });
+    } catch (err) {
+      console.error('Failed to copy order details: ', err);
+      // Fallback if clipboard fails
+      const encodedMessage = encodeURIComponent(orderDetails);
+      const messengerUrl = `https://m.me/1924770491097054?text=${encodedMessage}`;
+      window.open(messengerUrl, '_blank');
+    }
   };
 
   const isDetailsValid = customerName && contactNumber &&
