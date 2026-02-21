@@ -93,114 +93,90 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
 
   return (
     <>
-      <div className={`bg-kafe-white rounded-none shadow-[0_1px_3px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden group border border-kafe-gray-100 ${!item.available ? 'opacity-50 grayscale' : ''}`}>
-        {/* Image Container with Badges */}
-        <div className="relative h-64 bg-kafe-gray-50 overflow-hidden">
-          {item.image ? (
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.nextElementSibling?.classList.remove('hidden');
-              }}
-            />
-          ) : null}
-          <div className={`absolute inset-0 flex items-center justify-center bg-kafe-gray-50 ${item.image ? 'hidden' : ''}`}>
-            <div className="text-5xl opacity-10 text-kafe-black">☕</div>
-          </div>
+      <div className={`bg-kafe-white rounded-none transition-all duration-500 overflow-hidden group border border-kafe-gray-100 hover:border-kafe-black ${!item.available ? 'opacity-50' : ''}`}>
 
-          {/* Badges */}
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            {item.isOnDiscount && item.discountPrice && (
-              <div className="bg-kafe-black text-kafe-white text-[10px] font-bold tracking-widest px-3 py-1 uppercase rounded-none shadow-sm">
-                SALE
-              </div>
-            )}
-            {item.popular && (
-              <div className="bg-kafe-white text-kafe-black border border-kafe-black text-[10px] font-bold tracking-widest px-3 py-1 uppercase rounded-none shadow-sm">
-                FEATURED
-              </div>
-            )}
-          </div>
+        {/* Top accent bar */}
+        <div className="h-[2px] bg-kafe-black w-0 group-hover:w-full transition-all duration-500 ease-out" />
 
-          {!item.available && (
-            <div className="absolute inset-0 bg-kafe-white/80 backdrop-blur-[2px] flex items-center justify-center">
-              <span className="text-kafe-black text-xs font-black tracking-[0.3em] uppercase border-y-2 border-kafe-black py-2 px-4">
-                Sold Out
-              </span>
+        {/* Card Body */}
+        <div className="p-4 flex flex-col">
+
+          {/* Badges row — only render if there's something to show */}
+          {(item.popular || (item.isOnDiscount && item.discountPrice) || !item.available) && (
+            <div className="flex items-center gap-1.5 mb-3">
+              {item.popular && (
+                <span className="text-[8px] font-black tracking-[0.2em] text-kafe-gray-400 uppercase border border-kafe-gray-200 px-2 py-0.5">
+                  FEATURED
+                </span>
+              )}
+              {item.isOnDiscount && item.discountPrice && (
+                <span className="text-[8px] font-black tracking-[0.2em] text-kafe-white bg-kafe-black px-2 py-0.5 uppercase">
+                  -{Math.round(((item.basePrice - item.discountPrice) / item.basePrice) * 100)}% OFF
+                </span>
+              )}
+              {!item.available && (
+                <span className="text-[8px] font-black tracking-[0.2em] text-kafe-white bg-kafe-gray-400 px-2 py-0.5 uppercase">
+                  SOLD OUT
+                </span>
+              )}
             </div>
           )}
 
-          {/* Discount Percentage Badge */}
-          {item.isOnDiscount && item.discountPrice && (
-            <div className="absolute bottom-4 right-4 bg-kafe-white text-kafe-black text-[10px] font-bold tracking-widest px-2 py-1 uppercase">
-              -{Math.round(((item.basePrice - item.discountPrice) / item.basePrice) * 100)}%
-            </div>
-          )}
-        </div>
+          {/* Name */}
+          <h4 className="text-sm font-playfair font-bold text-kafe-black uppercase tracking-tight leading-snug mb-1">
+            {item.name}
+          </h4>
 
-        {/* Content */}
-        <div className="p-7">
-          <div className="flex items-start justify-between mb-4">
-            <h4 className="text-lg font-playfair font-bold text-kafe-black uppercase tracking-tight leading-tight flex-1 pr-4">{item.name}</h4>
-          </div>
-
-          <p className={`text-xs font-inter uppercase tracking-wider mb-6 leading-relaxed ${!item.available ? 'text-kafe-gray-400' : 'text-kafe-gray-500'}`}>
-            {item.description}
+          {/* Description */}
+          <p className={`text-[10px] font-inter tracking-wide leading-relaxed mb-4 ${!item.available ? 'text-kafe-gray-300' : 'text-kafe-gray-400'}`}>
+            {item.description || '—'}
           </p>
 
-          {/* Pricing Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
+          {/* Price + Action */}
+          <div className="flex items-center justify-between border-t border-kafe-gray-100 pt-3 mt-auto">
+            <div>
               {item.isOnDiscount && item.discountPrice ? (
-                <div className="flex items-center space-x-3">
-                  <span className="text-xl font-bold text-kafe-black">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-base font-playfair font-black text-kafe-black">
                     ₱{item.discountPrice.toFixed(2)}
                   </span>
-                  <span className="text-xs text-kafe-gray-400 line-through">
+                  <span className="text-[10px] text-kafe-gray-300 line-through font-inter">
                     ₱{item.basePrice.toFixed(2)}
                   </span>
                 </div>
               ) : (
-                <div className="text-xl font-bold text-kafe-black">
+                <span className="text-base font-playfair font-black text-kafe-black">
                   ₱{item.basePrice.toFixed(2)}
-                </div>
+                </span>
               )}
             </div>
 
-            {/* Action Buttons */}
-            <div>
-              {item.available && (
-                quantity === 0 ? (
+            {item.available && (
+              quantity === 0 ? (
+                <button
+                  onClick={handleAddToCart}
+                  className="bg-kafe-black text-kafe-white px-3 py-1.5 hover:bg-kafe-gray-800 active:scale-95 transition-all duration-300 font-black text-[8px] tracking-[0.25em] uppercase"
+                >
+                  {item.variations?.length || item.addOns?.length ? 'OPTIONS' : 'ADD'}
+                </button>
+              ) : (
+                <div className="flex items-center border border-kafe-gray-200">
                   <button
-                    onClick={handleAddToCart}
-                    className="group flex items-center space-x-2 bg-kafe-black text-kafe-white px-6 py-3 rounded-none hover:bg-kafe-gray-800 transition-all duration-300 transform active:scale-95 font-bold text-[10px] tracking-widest uppercase"
+                    onClick={handleDecrement}
+                    className="p-1.5 hover:bg-kafe-gray-50 transition-all duration-200"
                   >
-                    <span>{item.variations?.length || item.addOns?.length ? 'OPTIONS' : 'ADD'}</span>
+                    <Minus className="h-3 w-3 text-kafe-gray-500" />
                   </button>
-                ) : (
-                  <div className="flex items-center bg-kafe-gray-100 rounded-none p-1 border border-kafe-gray-200">
-                    <button
-                      onClick={handleDecrement}
-                      className="p-2 hover:bg-kafe-white hover:text-kafe-black transition-all duration-200"
-                    >
-                      <Minus className="h-3 w-3 text-kafe-gray-500" />
-                    </button>
-                    <span className="font-bold text-kafe-black min-w-[32px] text-center text-xs">{quantity}</span>
-                    <button
-                      onClick={handleIncrement}
-                      className="p-2 hover:bg-kafe-white hover:text-kafe-black transition-all duration-200"
-                    >
-                      <Plus className="h-3 w-3 text-kafe-gray-500" />
-                    </button>
-                  </div>
-                )
-              )}
-            </div>
+                  <span className="font-bold text-kafe-black min-w-[32px] text-center text-xs">{quantity}</span>
+                  <button
+                    onClick={handleIncrement}
+                    className="p-2.5 hover:bg-kafe-white transition-all duration-200"
+                  >
+                    <Plus className="h-3 w-3 text-kafe-gray-500" />
+                  </button>
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>

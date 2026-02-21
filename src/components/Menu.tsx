@@ -113,7 +113,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
                 <div className="w-12 h-0.5 bg-kafe-gray-200 mt-4"></div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {categoryItems.map((item) => {
                   const cartItem = cartItems.find(cartItem => cartItem.id === item.id);
                   return (
